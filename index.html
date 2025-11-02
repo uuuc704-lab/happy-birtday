@@ -454,12 +454,16 @@
                     name: name,
                     comment: comment,
                     timestamp: new Date().toISOString(),
-                    event: 'День рождения 05.11.2025'
+                    event: 'День рождения 05.11.2025',
+                    location: 'Филатова 6, квартира 127'
                 };
                 
                 try {
                     // Сохраняем в localStorage
                     saveToLocalStorage(rsvpData);
+                    
+                    // Отправляем данные владельцу
+                    await sendToOwner(rsvpData);
                     
                     showMessage(`Спасибо, ${name}! Жду тебя на празднике!`, 'success');
                     document.getElementById('guestName').textContent = name;
@@ -484,6 +488,42 @@
                 let guests = JSON.parse(localStorage.getItem('birthdayGuests')) || [];
                 guests.push(rsvpData);
                 localStorage.setItem('birthdayGuests', JSON.stringify(guests));
+            }
+            
+            // Отправка данных владельцу
+            async function sendToOwner(rsvpData) {
+              
+                
+            
+                await sendToTelegram(rsvpData);
+            }
+            
+       
+      
+            
+            // ВАРИАНТ 3: Отправка в Telegram
+            async function sendToTelegram(rsvpData) {
+                // Замените на ваш бот токен и chat ID
+                const botToken = '7009149773:AAE_-Mt-y1vFYKJ5P6jr9KB5k2iY-OP5pvM';
+                const chatId = '1687243802';
+                
+                const message = `🎉 Новый гость на день рождения!\n\nИмя: ${rsvpData.name}\nКомментарий: ${rsvpData.comment || 'Нет комментария'}\nВремя ответа: ${new Date(rsvpData.timestamp).toLocaleString('ru-RU')}`;
+                
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка отправки в Telegram');
+                }
             }
             
             // Показать сообщение
