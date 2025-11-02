@@ -521,15 +521,11 @@
        
       
             
-            // ВАРИАНТ 3: Отправка в Telegram
+       // ВАРИАНТ 3: Отправка в Telegram
             async function sendToTelegram(rsvpData) {
                 // Замените на ваш бот токен и chat ID
                 const botToken = '7009149773:AAE_-Mt-y1vFYKJ5P6jr9KB5k2iY-OP5pvM';
-                  const chatIds = [
-        '1687243802', // Ваш chat ID
-        '5038537488', // Chat ID второго пользователя
-        '0987654321'  // Chat ID третьего пользователя
-    ];
+                const chatId = '5038537488';
                 
                 const message = `🎉 Новый гость на день рождения!\n\nИмя: ${rsvpData.name}\nКомментарий: ${rsvpData.comment || 'Нет комментария'}\nВремя ответа: ${new Date(rsvpData.timestamp).toLocaleString('ru-RU')}`;
                 
@@ -583,5 +579,6 @@
     </script>
 </body>
 </html>
+
 
 
